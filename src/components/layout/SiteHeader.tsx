@@ -21,8 +21,8 @@ const SiteHeader = () => {
           ),
         )}
       </nav>
-      <Link to="/posts/dockerfile-best-practice" className={styles.cta}>
-        最新文章
+      <Link to="/login" className={styles.cta}>
+        登录
       </Link>
     </header>
   );

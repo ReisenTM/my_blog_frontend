@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import AllPostsPage from './pages/AllPostsPage';
 import CategoriesPage from './pages/CategoriesPage';
 import AboutPage from './pages/AboutPage';
+import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import PostPage from './pages/PostPage';
 
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/posts" element={<AllPostsPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/posts/:slug" element={<PostPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

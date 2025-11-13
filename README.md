@@ -6,7 +6,8 @@
 
 - **设计令牌单一来源**：`src/styles/colors.ts`、`typography.ts` 通过 `applyDesignTokens` 注入 CSS 变量，组件统一取值，方便主题切换。
 - **博客化组件组合**：`PostLayout` 三栏布局、`TableOfContents` 粘性目录、`CodeBlock` 语法高亮+复制、`Alert` 提示框完全遵循参考文档规范。
-- **完整路由与 Mock 数据**：`react-router-dom` 驱动首页 / 全部文章 / 分类 / 关于 / 文章详情 / 404，`src/data/mockData.ts` 提供编程主题文章示例。
+- **完整路由与 Mock 数据**：`react-router-dom` 驱动首页 / 全部文章 / 分类 / 关于 / 登录 / 文章详情 / 404，`src/data/mockData.ts` 提供编程主题文章示例。
+- **登录体验**：`/login` 页面提供 GitHub OAuth 入口与邮箱验证码登录 UI，后端接入时只需替换按钮跳转与验证码接口。
 - **首页体验**：英雄区 + 最新文章列表 + 分类索引 + 写作进度，让整个站点更接近真实博客运营。
 - **使用文档与 API 定义**：详见 [`USAGE.md`](USAGE.md)，覆盖命令、目录结构、Mock API 形状与集成建议。
 
