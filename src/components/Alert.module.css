@@ -1,0 +1,29 @@
+.alert {
+  border-left: 5px solid transparent;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 24px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 15px;
+}
+
+.tip {
+  border-color: var(--color-tip-border);
+  background: var(--color-tip-bg);
+}
+
+.warning {
+  border-color: var(--color-warning-border);
+  background: var(--color-warning-bg);
+}
+
+.prefix {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.content {
+  color: var(--color-text-secondary);
+}

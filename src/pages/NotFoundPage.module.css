@@ -1,0 +1,24 @@
+.container {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 120px;
+  font-weight: 600;
+  color: var(--color-bg-inline-code);
+}
+
+.link {
+  display: inline-flex;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--color-accent-blue);
+  color: #fff;
+  font-weight: 600;
+}

@@ -1,0 +1,27 @@
+.card {
+  background: #f5f6fb;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 22px;
+  font-family: var(--font-family-ui);
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.body {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--color-accent-blue);
+}

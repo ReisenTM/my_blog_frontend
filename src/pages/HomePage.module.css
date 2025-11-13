@@ -1,0 +1,181 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.hero {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  padding: 60px;
+  text-align: left;
+}
+
+.heroBadge {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, 0.12);
+  color: var(--color-accent-blue);
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 24px 0 16px;
+  font-size: clamp(36px, 5vw, 52px);
+  font-family: var(--font-family-ui);
+}
+
+.hero p {
+  margin: 0;
+  max-width: 720px;
+  color: var(--color-text-secondary);
+}
+
+.heroActions {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.heroPrimary,
+.heroSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.heroPrimary {
+  background: var(--color-accent-blue);
+  color: #fff;
+}
+
+.heroSecondary {
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  background: #f7f7fb;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.sectionLink {
+  font-weight: 600;
+  color: var(--color-accent-blue);
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.topicsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.topicCard {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.topicBadge {
+  width: 36px;
+  height: 8px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.topicCard h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.topicCard p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.topicMeta {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.changelogList {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.changelogItem {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.changelogDate {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  width: 110px;
+}
+
+.changelogItem p {
+  flex: 1;
+  margin: 0;
+}
+
+.changelogStatus {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-blue);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 32px 20px;
+  }
+
+  .changelogItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .changelogDate {
+    width: auto;
+  }
+}
