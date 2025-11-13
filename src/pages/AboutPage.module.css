@@ -126,6 +126,18 @@
   font-weight: 600;
 }
 
+.linkGroup {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.linkGroup a {
+  color: var(--color-accent-blue);
+}
+
 @media (max-width: 1024px) {
   .wrapper {
     grid-template-columns: minmax(0, 1fr);

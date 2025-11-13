@@ -86,6 +86,8 @@ export interface PostSection {
 | `GET /api/changelog` | 获取 DesignOps 更新日志 | `ChangelogEntry[]`。 |
 | `GET /api/authors/:id` | 获取作者信息 | `Author`；也可以在 `/api/posts/:slug` 中内联。 |
 
+> **提示**：当文章包含代码演示时，`sections` 中会带有 `code` 字段（`{ language: string; content: string }`）。消费 API 时可直接把 `language` 传给语法高亮组件，例如本文仓库中的 `CodeBlock`。
+
 ### JSON 示例：`GET /api/posts/design-system-blog`
 
 ```json

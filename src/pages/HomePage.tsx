@@ -13,14 +13,14 @@ const HomePage = () => {
         className={styles.hero}
         style={{
           backgroundImage: `linear-gradient(120deg, rgba(26, 6, 44, 0.95), rgba(102, 51, 153, 0.85)), url(${heroBackground})`,
-          backgroundSize: 'cover, 60% auto',
-          backgroundPosition: 'center, calc(100% - 60px) center',
+          backgroundSize: 'cover, 50% auto',
+          backgroundPosition: 'center, calc(100%  ) center',
           backgroundRepeat: 'no-repeat',
         }}
       >
         <div className={styles.heroBadge}>Reisen`s Blog · 编程手记</div>
-        <h1>记录我在编程世界的灵感与踩坑</h1>
-        <p>这里是我写代码、读源码、折腾工具的地方，从容器、后端到写作技巧，希望写下的每一篇文章都能帮你少走弯路。</p>
+        <h1>💡记录我在编程世界的灵感与踩坑</h1>
+        <p>这里是我写代码、读源码、折腾工具的地方，从前端、后端到心得分享，希望写下的每一篇文章都能帮你少走弯路。</p>
         <div className={styles.heroActions}>
           <Link to={`/posts/${featuredPost.slug}`} className={styles.heroPrimary}>
             阅读最新文章
@@ -35,7 +35,7 @@ const HomePage = () => {
         <div className={styles.sectionHeader}>
           <div>
             <p className={styles.kicker}>最新文章</p>
-            <h2>持续更新的云原生笔记</h2>
+            <h2>持续更新的笔记</h2>
           </div>
           <Link to="/posts" className={styles.sectionLink}>
             查看全部 →

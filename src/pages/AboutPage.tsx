@@ -13,13 +13,13 @@ const AboutPage = () => {
             <p className={styles.kicker}>About Reisen</p>
             <h1>写代码、写文章的快乐都在这里</h1>
             <p>
-              我是 Reisen，一个常年泡在代码编辑器里的后端工程师。十年前开始记录编程笔记，从最早的 C++ 算法到如今
-              的云原生、自动化脚本，我把这些碎片结成一篇篇博客。写作帮助我复盘，也让我与更多开发者建立链接。
+              我是 Reisen，一个常年泡在代码编辑器里的后端工程师。2022年前开始记录编程笔记，从最早的 C++ 算法到如今
+              的云原生、AI Agent，我把这些碎片结成一篇篇博客。写作帮助我复盘，也让我与更多开发者建立链接。
             </p>
             <ul className={styles.metaList}>
-              <li>📍 成都 · 喜欢咖啡和清晨的键盘声音</li>
-              <li>🧑‍💻 目前在一家云服务团队负责平台工程</li>
-              <li>✉️ <a href="mailto:hello@reisen.dev">hello@reisen.dev</a></li>
+              <li>📍 郑州 · 喜欢美食和钢琴</li>
+              <li>🧑‍💻 目前在学校 大三ing</li>
+              <li>✉️ <a href="mailto:s3068272040@gmail.com">s3068272040@gmail.com</a></li>
             </ul>
             <div className={styles.badges}>
               <span>后端开发</span>
@@ -75,10 +75,16 @@ const AboutPage = () => {
           <p>可以聊聊以下方向：</p>
           <ul>
             <li>技术写作 / 文档共建</li>
-            <li>内部分享 · 培训课程</li>
-            <li>开发者工具体验レビュー</li>
+            <li>内部分享 · 友链建设</li>
+            <li>开发者工具体验</li>
           </ul>
-          <a className={styles.contactBtn} href="mailto:hello@reisen.dev">给我写信</a>
+          <a className={styles.contactBtn} href="mailto:s3068272040@gmail.com">给我写信</a>
+          <div className={styles.linkGroup}>
+            <span>GitHub：</span>
+            <a href="https://github.com/code-orderliness" target="_blank" rel="noreferrer">
+              github.com/code-orderliness
+            </a>
+          </div>
         </div>
       </aside>
     </section>
