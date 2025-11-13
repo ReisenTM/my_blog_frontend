@@ -13,19 +13,20 @@ export const useActiveHeading = (headingIds: string[]) => {
       return undefined;
     }
 
-    const collectPositions = () =>
-      headingIds
-        .map((id) => {
-          const element = document.getElementById(id);
-          if (!element) return null;
-          return { id, top: element.getBoundingClientRect().top + window.scrollY };
-        })
-        .filter((item): item is { id: string; top: number } => Boolean(item));
+    const findCurrent = () => {
+      const scrollY = window.scrollY + 160;
+      let current = headingIds[0];
 
-    let positions = collectPositions();
+      headingIds.forEach((id) => {
+        const element = document.getElementById(id);
+        if (!element) return;
+        const top = element.getBoundingClientRect().top + window.scrollY;
+        if (top <= scrollY) {
+          current = id;
+        }
+      });
 
-    const handleResize = () => {
-      positions = collectPositions();
+      return current;
     };
 
     let ticking = false;
@@ -33,24 +34,19 @@ export const useActiveHeading = (headingIds: string[]) => {
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(() => {
-        const scrollY = window.scrollY + 160; // 提前一些让标题更早激活
-        let current = positions[0];
-        for (const pos of positions) {
-          if (pos.top <= scrollY) {
-            current = pos;
-          }
-        }
-        if (current && current.id !== activeIdRef.current) {
-          setActiveId(current.id);
+        const next = findCurrent();
+        if (next && next !== activeIdRef.current) {
+          setActiveId(next);
         }
         ticking = false;
       });
     };
 
+    const handleResize = () => handleScroll();
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
 
-    handleResize();
     handleScroll();
 
     return () => {
