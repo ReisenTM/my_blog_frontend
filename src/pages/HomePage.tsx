@@ -2,13 +2,22 @@ import { Link } from 'react-router-dom';
 import PostPreviewCard from '../components/PostPreviewCard';
 import { changelogEntries, posts, topics } from '../data/mockData';
 import styles from './HomePage.module.css';
+import heroBackground from '../../resource/background-1.png';
 
 const HomePage = () => {
   const featuredPost = posts[0];
 
   return (
     <div className={styles.wrapper}>
-      <section className={styles.hero}>
+      <section
+        className={styles.hero}
+        style={{
+          backgroundImage: `linear-gradient(120deg, rgba(26, 6, 44, 0.95), rgba(102, 51, 153, 0.85)), url(${heroBackground})`,
+          backgroundSize: 'cover, 60% auto',
+          backgroundPosition: 'center, calc(100% - 60px) center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
         <div className={styles.heroBadge}>Reisen`s Blog · 编程手记</div>
         <h1>记录我在编程世界的灵感与踩坑</h1>
         <p>这里是我写代码、读源码、折腾工具的地方，从容器、后端到写作技巧，希望写下的每一篇文章都能帮你少走弯路。</p>

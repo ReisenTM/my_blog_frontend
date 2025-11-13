@@ -9,12 +9,12 @@
   background: #fff;
   z-index: 10;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: 28px;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
 .logo {
-  font-family: var(--font-family-ui);
+  font-family: var(--font-family-code);
   font-weight: 600;
   font-size: 20px;
   color: var(--color-text-main);
@@ -47,7 +47,7 @@
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
-    border-radius: 24px;
+    border-radius: 22px;
     top: 12px;
   }
 

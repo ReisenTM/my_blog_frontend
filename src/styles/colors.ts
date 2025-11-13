@@ -5,7 +5,7 @@ export const Colors = {
   codeBg: '#2D2D2D',
   textMain: '#202020',
   textSecondary: '#606060',
-  accentBlue: '#007AFF',
+  accentBlue: '#663399',
   textCodeInline: '#D90429',
   borderColor: '#E0E0E0',
   tipBorder: '#007AFF',

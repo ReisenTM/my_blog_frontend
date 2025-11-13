@@ -281,6 +281,82 @@ spec:
     ],
     recommendedSlugs: ['kubernetes-core-concepts'],
   },
+  {
+    id: 'post-004',
+    slug: 'golang-markdown-testing',
+    title: 'Golang Markdown 代码块渲染测试',
+    summary:
+      '在这篇随笔里，我用 Go 写了一个极简的 Markdown 渲染器，顺便测试博客里的 CodeBlock 组件对多行代码段的表现。',
+    categories: ['后端编程', '编程随笔'],
+    tags: ['Go', 'Markdown', 'CLI'],
+    publishedAt: '2025-03-18',
+    readingTime: '5 min',
+    hero: {
+      badge: 'Go · CLI Tooling',
+      headline: '用 Go 解析 Markdown 代码块',
+      description: '为了验证 CodeBlock 的表现，我写了段 Go 代码，将 Markdown 里的 ```go 片段提取出来。',
+    },
+    authorId: 'gemini',
+    sections: [
+      {
+        id: 'motivation',
+        title: '写这段工具的小动机',
+        level: 2,
+        paragraphs: [
+          '长久以来我都依赖第三方库来渲染 Markdown，但在调试博客主题时，需要一个可快速修改的轻量脚本。',
+          '于是我写了一个 Go 程序，扫描 Markdown 文本并把 ```go ... ``` 之间的内容提取出来。',
+        ],
+      },
+      {
+        id: 'code-demo',
+        title: '核心代码片段',
+        level: 2,
+        paragraphs: ['下面的代码展示了如何用 Go 的 bufio 和简单状态机解析 Markdown：'],
+        code: {
+          language: 'go',
+          content: `package main
+
+import (
+  "bufio"
+  "fmt"
+  "os"
+)
+
+func main() {
+  scanner := bufio.NewScanner(os.Stdin)
+  inBlock := false
+  for scanner.Scan() {
+    line := scanner.Text()
+    if line == "\`\`\`go" {
+      inBlock = true
+      continue
+    }
+    if line == "\`\`\`" && inBlock {
+      inBlock = false
+      fmt.Println("--- end block ---")
+      continue
+    }
+    if inBlock {
+      fmt.Println(line)
+    }
+  }
+}`,
+        },
+      },
+      {
+        id: 'usage',
+        title: '如何使用',
+        level: 2,
+        paragraphs: ['为了方便测试，我把它当作一个命令行过滤器使用，步骤如下：'],
+        list: [
+          '将上面的代码保存为 main.go，在终端运行 `go run main.go < README.md`。',
+          '任意包含 ```go 代码块的 Markdown 文件都会被提取出纯代码部分。',
+          '搭配博客的 CodeBlock 组件即可测试不同主题的渲染效果。',
+        ],
+      },
+    ],
+    recommendedSlugs: ['dockerfile-best-practice'],
+  },
 ];
 
 export const topics: Topic[] = [
