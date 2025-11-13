@@ -81,8 +81,10 @@ const AboutPage = () => {
           <a className={styles.contactBtn} href="mailto:s3068272040@gmail.com">给我写信</a>
           <div className={styles.linkGroup}>
             <span>GitHub：</span>
-            <a href="https://github.com/code-orderliness" target="_blank" rel="noreferrer">
-              github.com/code-orderliness
+            <a href="https://github.com/ReisenTM/my_blog" target="_blank" rel="noreferrer" aria-label="Reisen 的 GitHub">
+              <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                <path d="M12 .5a11.5 11.5 0 0 0-3.64 22.4c.58.11.79-.25.79-.55 0-.27-.01-.98-.02-1.93-3.22.7-3.9-1.55-3.9-1.55-.53-1.35-1.3-1.71-1.3-1.71-1.07-.75.08-.74.08-.74 1.18.08 1.8 1.22 1.8 1.22 1.05 1.8 2.76 1.28 3.43.98.11-.77.41-1.28.74-1.57-2.57-.29-5.27-1.29-5.27-5.73 0-1.27.45-2.32 1.2-3.14-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.2 1.2a11 11 0 0 1 5.82 0c2.2-1.51 3.18-1.2 3.18-1.2.64 1.59.24 2.76.12 3.05.75.82 1.19 1.87 1.19 3.14 0 4.45-2.71 5.44-5.29 5.72.42.36.79 1.08.79 2.18 0 1.58-.02 2.84-.02 3.23 0 .3.21.66.8.55A11.5 11.5 0 0 0 12 .5Z" />
+              </svg>
             </a>
           </div>
         </div>
