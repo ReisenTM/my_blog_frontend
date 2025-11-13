@@ -10,7 +10,7 @@ const HomePage = () => {
     <div className={styles.wrapper}>
       <section className={styles.hero}>
         <div className={styles.heroBadge}>Reisen`s Blog · 编程手记</div>
-        <h1>💡记录我在编程世界的灵感与踩坑</h1>
+        <h1>记录我在编程世界的灵感与踩坑💡</h1>
         <p>这里是我写代码、读源码、折腾工具的地方，从前端、后端到心得分享，希望写下的每一篇文章都能帮你少走弯路。</p>
         <div className={styles.heroActions}>
           <Link to={`/posts/${featuredPost.slug}`} className={styles.heroPrimary}>
