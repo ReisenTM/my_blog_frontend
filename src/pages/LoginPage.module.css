@@ -56,6 +56,28 @@
   gap: 18px;
 }
 
+.modeToggle {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.modeToggle button {
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.activeMode {
+  background: rgba(102, 51, 153, 0.15);
+  color: var(--color-accent-blue);
+}
+
 label {
   display: flex;
   flex-direction: column;

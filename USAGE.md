@@ -86,7 +86,8 @@ export interface PostSection {
 | `GET /api/changelog` | 获取 DesignOps 更新日志 | `ChangelogEntry[]`。 |
 | `GET /api/authors/:id` | 获取作者信息 | `Author`；也可以在 `/api/posts/:slug` 中内联。 |
 | `POST /api/auth/email-code` | (登录) 发送邮箱验证码 | 请求体 `{ email: string }`。 |
-| `POST /api/auth/verify` | (登录) 校验验证码并下发 token | 请求体 `{ email: string; code: string }`。 |
+| `POST /api/auth/verify` | (注册) 校验验证码并下发 token | 请求体 `{ email: string; code: string; password: string }`。 |
+| `POST /api/auth/login` | 邮箱 + 密码登录 | 请求体 `{ email: string; password: string }`。 |
 | `GET /api/auth/github` | GitHub OAuth 跳转 | 后端重定向至 GitHub。 |
 | `GET /api/auth/github/callback` | GitHub OAuth 回调 | 返回 token 与用户信息。 |
 

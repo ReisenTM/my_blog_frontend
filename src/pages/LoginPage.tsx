@@ -1,8 +1,12 @@
 import { FormEvent, useEffect, useState } from 'react';
 import styles from './LoginPage.module.css';
 
+type AuthMode = 'login' | 'register';
+
 const LoginPage = () => {
+  const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [cooldown, setCooldown] = useState(0);
   const [feedback, setFeedback] = useState('');
@@ -16,6 +20,7 @@ const LoginPage = () => {
   }, [cooldown]);
 
   const handleSendCode = () => {
+    if (mode !== 'register') return;
     if (!email) {
       setFeedback('请输入邮箱，方便发送验证码。');
       return;
@@ -27,12 +32,19 @@ const LoginPage = () => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (!email || !code) {
-      setFeedback('请填写邮箱和验证码。');
+    if (!email || !password) {
+      setFeedback('请填写邮箱与密码。');
       return;
     }
-    setFeedback('正在验证，请稍候……');
-    // 真实后端：发送邮箱与验证码到 /api/auth/verify。
+
+    if (mode === 'register' && !code) {
+      setFeedback('请填写验证码完成注册。');
+      return;
+    }
+
+    setFeedback(mode === 'login' ? '正在登录…' : '正在注册…');
+    // 登录：POST /api/auth/login { email, password }
+    // 注册：POST /api/auth/register { email, password, code }
   };
 
   const handleGithubLogin = () => {
@@ -46,7 +58,7 @@ const LoginPage = () => {
           <p className={styles.kicker}>登录 Reisen`s Blog</p>
           <h1>欢迎回到知识花园</h1>
           <p className={styles.description}>
-            支持 GitHub OAuth 与邮箱验证码登录。邮箱方式适合初次访问者，GitHub OAuth 可直接同步你的头像与昵称。
+            支持 GitHub OAuth、邮箱登录与邮箱注册。注册流程需输入密码并通过验证码验证，后续登录只需邮箱+密码。
           </p>
 
           <button type="button" className={styles.githubButton} onClick={handleGithubLogin}>
@@ -58,6 +70,14 @@ const LoginPage = () => {
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.modeToggle}>
+            <button type="button" className={mode === 'login' ? styles.activeMode : ''} onClick={() => setMode('login')}>
+              登录
+            </button>
+            <button type="button" className={mode === 'register' ? styles.activeMode : ''} onClick={() => setMode('register')}>
+              注册
+            </button>
+          </div>
           <label>
             <span>邮箱地址</span>
             <input
@@ -69,25 +89,39 @@ const LoginPage = () => {
             />
           </label>
 
-          <label className={styles.codeRow}>
-            <span>验证码</span>
-            <div className={styles.codeInputs}>
-              <input
-                type="text"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-                placeholder="请输入 6 位数字"
-                maxLength={6}
-                required
-              />
-              <button type="button" onClick={handleSendCode} disabled={cooldown > 0}>
-                {cooldown > 0 ? `重新发送 (${cooldown}s)` : '发送验证码'}
-              </button>
-            </div>
+          <label>
+            <span>密码</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="至少 8 位密码"
+              minLength={6}
+              required
+            />
           </label>
 
+          {mode === 'register' ? (
+            <label className={styles.codeRow}>
+              <span>验证码</span>
+              <div className={styles.codeInputs}>
+                <input
+                  type="text"
+                  value={code}
+                  onChange={(event) => setCode(event.target.value)}
+                  placeholder="请输入 6 位数字"
+                  maxLength={6}
+                  required
+                />
+                <button type="button" onClick={handleSendCode} disabled={cooldown > 0}>
+                  {cooldown > 0 ? `重新发送 (${cooldown}s)` : '发送验证码'}
+                </button>
+              </div>
+            </label>
+          ) : null}
+
           <button type="submit" className={styles.submitButton}>
-            登录 / 注册
+            {mode === 'login' ? '登录' : '注册'}
           </button>
           {feedback ? <p className={styles.feedback}>{feedback}</p> : null}
         </form>

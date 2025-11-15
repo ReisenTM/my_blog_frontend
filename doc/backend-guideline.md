@@ -136,6 +136,30 @@ interface PostSection {
 
 > 建议所有响应都包含 `code`（0 表示成功）、`message`、`data`，方便前端统一处理。
 
+### 4.3 邮箱密码登录
+**请求：** `POST /api/auth/login`
+```json
+{
+  "email": "s3068272040@gmail.com",
+  "password": "your-secure-password"
+}
+```
+**响应：**
+```json
+{
+  "code": 0,
+  "message": "登录成功",
+  "data": {
+    "token": "jwt-or-session-token",
+    "user": {
+      "id": "reisen",
+      "name": "Reisen",
+      "avatar": "https://cdn/avatar.png"
+    }
+  }
+}
+```
+
 ## 5. 开发流程建议
 1. **Mock 阶段**：将 `src/data/mockData.ts` 中数据迁移到后端 JSON 文件或数据库。
 2. **接口联调**：前端用 `fetch`/React Query 调用上述 API，并用 loading/error 状态兜底。
