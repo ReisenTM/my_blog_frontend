@@ -1,21 +1,66 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import Alert from '../components/Alert';
 import CodeBlock from '../components/CodeBlock';
 import PostLayout from '../components/PostLayout';
 import SidebarCard from '../components/SidebarCard';
 import TableOfContents from '../components/TableOfContents';
-import { authors, posts } from '../data/mockData';
 import { useActiveHeading } from '../hooks/useActiveHeading';
+import { api } from '../services/api';
+import type { Author, BlogPost } from '../types/blog';
 import { formatDate } from '../utils/formatDate';
 import styles from './PostPage.module.css';
 
 const PostPage = () => {
   const { slug } = useParams();
-  const post = posts.find((item) => item.slug === slug);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [author, setAuthor] = useState<Author | null>(null);
+  const [recommended, setRecommended] = useState<BlogPost[]>([]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!slug) return;
+      try {
+        const data = await api.getPost(slug);
+        if (cancelled) return;
+        setPost(data);
+
+        try {
+          const authorData = await api.getAuthor(data.authorId);
+          if (!cancelled) {
+            setAuthor(authorData);
+          }
+        } catch (authorErr) {
+          console.warn('作者信息拉取失败', authorErr);
+        }
+
+        try {
+          const recommendData = await api.listPosts();
+          if (!cancelled) {
+            setRecommended(recommendData.filter((item) => data.recommendedSlugs.includes(item.slug)));
+          }
+        } catch (recommendErr) {
+          console.warn('推荐文章加载失败', recommendErr);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : '文章加载失败');
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  if (error) {
+    return <section className={styles.section}>加载失败：{error}</section>;
+  }
 
   if (!post) {
-    return <Navigate to="/" replace />;
+    return <section className={styles.section}>加载中…</section>;
   }
 
   const headings = useMemo(
@@ -29,8 +74,6 @@ const PostPage = () => {
   );
   const headingIds = useMemo(() => headings.map((heading) => heading.id), [headings]);
   const activeId = useActiveHeading(headingIds);
-  const author = authors.find((person) => person.id === post.authorId);
-  const recommended = posts.filter((item) => post.recommendedSlugs.includes(item.slug));
 
   const sidebar = (
     <div className="sidebar-stack">
@@ -69,7 +112,7 @@ const PostPage = () => {
     </div>
   );
 
-  return (
+  return slug ? (
     <PostLayout toc={<TableOfContents headings={headings} activeId={activeId} />} sidebar={sidebar}>
       <>
         <header className="article-hero">
@@ -91,13 +134,13 @@ const PostPage = () => {
               </ul>
             ) : null}
             {section.alert ? <Alert type={section.alert.type}>{section.alert.content}</Alert> : null}
-            {section.code ? (
-              <CodeBlock language={section.code.language} content={section.code.content} />
-            ) : null}
+            {section.code ? <CodeBlock language={section.code.language} content={section.code.content} /> : null}
           </section>
         ))}
       </>
     </PostLayout>
+  ) : (
+    <Navigate to="/" replace />
   );
 };
 

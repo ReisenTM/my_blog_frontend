@@ -1,6 +1,12 @@
 import { NavLink, Link } from 'react-router-dom';
-import { navigationLinks } from '../../data/mockData';
 import styles from './SiteHeader.module.css';
+
+const navigationLinks = [
+  { label: '首页', path: '/' },
+  { label: '文章', path: '/posts' },
+  { label: '分类', path: '/categories' },
+  { label: '关于我', path: '/about' },
+];
 
 const SiteHeader = () => {
   return (

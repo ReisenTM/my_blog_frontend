@@ -1,22 +1,48 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PostPreviewCard from '../components/PostPreviewCard';
-import { posts, topics } from '../data/mockData';
 import styles from './CategoriesPage.module.css';
+import type { BlogPost, Topic } from '../types/blog';
+import { api } from '../services/api';
 
 const CategoriesPage = () => {
-  const [activeTopicId, setActiveTopicId] = useState(topics[0]?.id ?? '');
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [activeTopicId, setActiveTopicId] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [topicData, postData] = await Promise.all([api.getTopics(), api.listPosts()]);
+        if (cancelled) return;
+        setTopics(topicData);
+        setPosts(postData);
+        setActiveTopicId(topicData[0]?.id ?? '');
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : '分类加载失败');
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const activeTopic = topics.find((topic) => topic.id === activeTopicId);
 
   const filteredPosts = useMemo(() => {
     if (!activeTopic) return posts;
     return posts.filter((post) => post.categories.includes(activeTopic.title));
-  }, [activeTopic]);
+  }, [activeTopic, posts]);
 
   return (
     <section className={styles.wrapper}>
       <aside className={styles.sidebar} aria-label="分类导航">
         <h1>分类</h1>
         <p>挑一个你感兴趣的主题，右侧会展示对应的文章。</p>
+        {error ? <p>{error}</p> : null}
         <ul className={styles.topicList}>
           {topics.map((topic) => (
             <li key={topic.id}>

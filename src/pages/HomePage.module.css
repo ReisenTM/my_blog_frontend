@@ -65,6 +65,11 @@
   background: #f7f7fb;
 }
 
+.error {
+  margin: 12px 0;
+  color: var(--color-accent-blue);
+}
+
 .sectionHeader {
   display: flex;
   align-items: center;

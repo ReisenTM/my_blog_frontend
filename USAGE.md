@@ -1,6 +1,6 @@
 # 使用文档 & API 约定
 
-本文档帮助你快速理解 Reisen`s Blog 前端的运行方式、目录结构以及 Mock API 设计，方便后续替换为真实后端或接入 CI/CD。
+本文档帮助你快速理解 Reisen`s Blog 前端的运行方式、目录结构以及实时 API 调用方式，方便与后端服务对接。
 
 ## 运行指令
 
@@ -18,7 +18,7 @@ src
 ├── components             # 文章布局、目录、代码块、卡片等 UI 组件
 │   ├── layout             # Header / Footer / Layout 容器
 │   └── …
-├── data/mockData.ts       # 作者、文章、主题、日志等 Mock 数据
+├── services/api.ts        # 调用后端真实接口的封装
 ├── hooks/useActiveHeading.ts
 ├── pages                  # Home / AllPosts / Categories / About / Post / NotFound 页面
 ├── styles                 # 设计令牌 + 全局样式
@@ -74,9 +74,7 @@ export interface PostSection {
 }
 ```
 
-## Mock API 设计
-
-前端目前使用本地数据，但已预留可直接替换的 API 约定（REST 风格）：
+## API 约定
 
 | Method & Path | 说明 | 返回示例 |
 | --- | --- | --- |
@@ -86,8 +84,8 @@ export interface PostSection {
 | `GET /api/changelog` | 获取 DesignOps 更新日志 | `ChangelogEntry[]`。 |
 | `GET /api/authors/:id` | 获取作者信息 | `Author`；也可以在 `/api/posts/:slug` 中内联。 |
 | `POST /api/auth/email-code` | (登录) 发送邮箱验证码 | 请求体 `{ email: string }`。 |
-| `POST /api/auth/verify` | (注册) 校验验证码并下发 token | 请求体 `{ email: string; code: string; password: string }`。 |
-| `POST /api/auth/login` | 邮箱 + 密码登录 | 请求体 `{ email: string; password: string }`。 |
+| `POST /api/auth/register` | 邮箱注册（需附验证码） | 请求体 `{ email: string; emailCode: string; password: string }`。 |
+| `POST /api/auth/email-login` | 邮箱 + 密码登录 | 请求体 `{ email: string; password: string }`。 |
 | `GET /api/auth/github` | GitHub OAuth 跳转 | 后端重定向至 GitHub。 |
 | `GET /api/auth/github/callback` | GitHub OAuth 回调 | 返回 token 与用户信息。 |
 
@@ -116,11 +114,11 @@ export interface PostSection {
 }
 ```
 
-> 当后端可用时，仅需把 `src/data/mockData.ts` 的读取逻辑替换为请求结果或 React Query/RTK Query，就能无缝切换。
+> 在 `.env` 中设置 `VITE_API_BASE`（默认 `http://127.0.0.1:8083/api`），`src/services/api.ts` 会自动使用该地址发起请求。
 
 ## 集成指南
 
-1. **扩展文章**：在 `src/data/mockData.ts` 中新增 `BlogPost` 条目，或在未来改为 API 响应；确保 `sections` 至少包含 `id/title/level/paragraphs`。
+1. **扩展文章**：在后端新增文章数据后，前端会自动通过 `/api/posts` 获取最新列表；如需本地调试可替换 API 地址。
 2. **自定义主题**：更新 `src/styles/colors.ts` / `typography.ts`，或在 `applyDesignTokens` 中注入暗色 token；组件自动响应。
 3. **导航菜单**：调整 `navigationLinks` 即可在 Header 中增删入口。
 4. **部署**：`npm run build` 产出的 `dist/` 可直接部署至静态托管（Vercel、Netlify、OSS 等）。

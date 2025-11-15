@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import styles from './LoginPage.module.css';
+import { api } from '../services/api';
 
 type AuthMode = 'login' | 'register';
 
@@ -19,18 +20,22 @@ const LoginPage = () => {
     return () => window.clearInterval(timer);
   }, [cooldown]);
 
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
     if (mode !== 'register') return;
     if (!email) {
       setFeedback('请输入邮箱，方便发送验证码。');
       return;
     }
-    setCooldown(60);
-    setFeedback('验证码已发送，请在 10 分钟内输入。');
-    // 在真实后端中，这里应调用 /api/auth/email-code 接口。
+    try {
+      await api.sendEmailCode(email, 1);
+      setCooldown(60);
+      setFeedback('验证码已发送，请在 10 分钟内输入。');
+    } catch (err) {
+      setFeedback(err instanceof Error ? err.message : '验证码发送失败');
+    }
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!email || !password) {
       setFeedback('请填写邮箱与密码。');
@@ -42,13 +47,24 @@ const LoginPage = () => {
       return;
     }
 
-    setFeedback(mode === 'login' ? '正在登录…' : '正在注册…');
-    // 登录：POST /api/auth/login { email, password }
-    // 注册：POST /api/auth/register { email, password, code }
+    try {
+      if (mode === 'login') {
+        const token = await api.emailLogin({ email, password });
+        localStorage.setItem('reisen-token', token);
+        setFeedback('登录成功，Token 已写入 localStorage。');
+      } else {
+        await api.register({ email, emailCode: code, password });
+        setFeedback('注册成功，请直接使用邮箱+密码登录。');
+        setMode('login');
+        setCode('');
+      }
+    } catch (err) {
+      setFeedback(err instanceof Error ? err.message : '操作失败，请稍后再试');
+    }
   };
 
   const handleGithubLogin = () => {
-    window.location.href = '/api/auth/github';
+    window.location.href = api.githubAuthUrl;
   };
 
   return (

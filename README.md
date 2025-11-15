@@ -6,7 +6,7 @@
 
 - **设计令牌单一来源**：`src/styles/colors.ts`、`typography.ts` 通过 `applyDesignTokens` 注入 CSS 变量，组件统一取值，方便主题切换。
 - **博客化组件组合**：`PostLayout` 三栏布局、`TableOfContents` 粘性目录、`CodeBlock` 语法高亮+复制、`Alert` 提示框完全遵循参考文档规范。
-- **完整路由与 Mock 数据**：`react-router-dom` 驱动首页 / 全部文章 / 分类 / 关于 / 登录 / 文章详情 / 404，`src/data/mockData.ts` 提供编程主题文章示例。
+- **完整路由 + 实时 API**：`react-router-dom` 驱动首页 / 全部文章 / 分类 / 关于 / 登录 / 文章详情 / 404，数据通过 `src/services/api.ts` 请求后端（可用 `VITE_API_BASE` 覆盖默认地址）。
 - **登录体验**：`/login` 页面提供 GitHub OAuth、邮箱登录（邮箱+密码）与邮箱注册（邮箱+验证码+密码）三种入口，后端接入时按需对接对应 API。
 - **首页体验**：英雄区 + 最新文章列表 + 分类索引 + 写作进度，让整个站点更接近真实博客运营。
 - **使用文档与 API 定义**：详见 [`USAGE.md`](USAGE.md)，覆盖命令、目录结构、Mock API 形状与集成建议。
@@ -29,7 +29,15 @@ npm run preview
 
 - `src/styles/`：设计令牌与全局样式。
 - `src/components/`：布局、文章模块与基础 UI。
-- `src/pages/`：`HomePage`、`PostPage`、`NotFoundPage`。
-- `src/data/mockData.ts`：所有 Mock 数据入口。
+- `src/pages/`：`HomePage`、`AllPostsPage`、`CategoriesPage`、`AboutPage`、`LoginPage`、`PostPage` 等。
+- `src/services/api.ts`：封装所有后端接口请求。
 - `USAGE.md`：使用说明 + API 约定。
+
+## 环境变量
+
+在根目录创建 `.env` 或 `.env.local` 并覆盖默认 API 地址：
+
+```
+VITE_API_BASE=http://127.0.0.1:8083/api
+```
 # my_blog
