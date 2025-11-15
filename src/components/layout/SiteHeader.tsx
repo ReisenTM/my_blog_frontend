@@ -15,17 +15,11 @@ const SiteHeader = () => {
         Reisen`s Blog
       </Link>
       <nav className={styles.nav} aria-label="主导航">
-        {navigationLinks.map((item) =>
-          item.external ? (
-            <a key={item.label} href={item.path} className={styles.link} target="_blank" rel="noreferrer">
-              {item.label}
-            </a>
-          ) : (
-            <NavLink key={item.label} to={item.path} className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}>
-              {item.label}
-            </NavLink>
-          ),
-        )}
+        {navigationLinks.map((item) => (
+          <NavLink key={item.label} to={item.path} className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}>
+            {item.label}
+          </NavLink>
+        ))}
       </nav>
       <Link to="/login" className={styles.cta}>
         登录

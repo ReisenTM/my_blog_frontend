@@ -114,7 +114,7 @@ export interface PostSection {
 }
 ```
 
-> 在 `.env` 中设置 `VITE_API_BASE`（默认 `http://127.0.0.1:8083/api`），`src/services/api.ts` 会自动使用该地址发起请求。
+> 在 `.env` 中设置 `VITE_API_BASE`（默认 `/api`）和 `VITE_DEV_API_TARGET`（默认 `http://127.0.0.1:8083`）；开发模式下由 Vite 代理转发，生产可将 `/api` 指向真实网关。
 
 ## 集成指南
 

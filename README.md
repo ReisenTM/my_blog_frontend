@@ -35,9 +35,10 @@ npm run preview
 
 ## 环境变量
 
-在根目录创建 `.env` 或 `.env.local` 并覆盖默认 API 地址：
+默认情况下，前端会向相对路径 `/api` 发起请求，开发模式由 Vite 代理到 `http://127.0.0.1:8083`。如需调整，可在根目录创建 `.env` 或 `.env.local`：
 
 ```
-VITE_API_BASE=http://127.0.0.1:8083/api
+VITE_API_BASE=/api              # 前端请求基础路径，生产可指向 Nginx 反向代理
+VITE_DEV_API_TARGET=http://127.0.0.1:8083  # 本地开发代理到的后端地址
 ```
 # my_blog
