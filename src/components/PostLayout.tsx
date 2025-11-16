@@ -10,7 +10,7 @@ interface PostLayoutProps {
 const PostLayout = ({ children, toc, sidebar }: PostLayoutProps) => {
   return (
     <div className={styles.layout}>
-      <aside className={`${styles.column} post-toc`} aria-label="文章目录">
+      <aside className={`${styles.column} ${styles.toc}`} aria-label="文章目录">
         {toc}
       </aside>
       <main className={styles.content}>

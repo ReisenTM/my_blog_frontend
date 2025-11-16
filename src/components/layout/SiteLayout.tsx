@@ -8,10 +8,12 @@ interface SiteLayoutProps {
 }
 
 const SiteLayout = ({ children }: SiteLayoutProps) => (
-  <div className={styles.shell}>
+  <div className={styles.app}>
     <SiteHeader />
-    <main className={styles.main}>{children}</main>
-    <SiteFooter />
+    <div className={styles.shell}>
+      <main className={styles.main}>{children}</main>
+      <SiteFooter />
+    </div>
   </div>
 );
 

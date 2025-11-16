@@ -1,4 +1,5 @@
-import type { Author, BlogPost, ChangelogEntry, Topic } from '../types/blog';
+import type { ArticleDetail, ArticleOverviewItem, PageResult } from '../types/blog';
+import { getAuthToken } from '../utils/auth';
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? '/api';
 
@@ -35,12 +36,49 @@ const request = async <T>(path: string, init?: RequestInit) => {
   return payload.data;
 };
 
+type ListParams = { page?: number; pageSize?: number; keyword?: string; author?: string };
+
+const normalizeStringArray = (values: string[] | null | undefined) => (Array.isArray(values) ? values : []);
+
+const normalizeArticle = (article: ArticleOverviewItem): ArticleOverviewItem => ({
+  ...article,
+  categories: normalizeStringArray(article.categories),
+  tags: normalizeStringArray(article.tags),
+});
+
+const normalizeArticleDetail = (article: ArticleDetail): ArticleDetail => ({
+  ...article,
+  categories: normalizeStringArray(article.categories),
+  tags: normalizeStringArray(article.tags),
+});
+
 export const api = {
-  listPosts: () => request<BlogPost[]>('/posts'),
-  getPost: (slug: string) => request<BlogPost>(`/posts/${slug}`),
-  getTopics: () => request<Topic[]>('/topics'),
-  getChangelog: () => request<ChangelogEntry[]>('/changelog'),
-  getAuthor: (id: string) => request<Author>(`/authors/${id}`),
+  listArticles: (params?: ListParams) => {
+    const query = new URLSearchParams();
+    if (params?.page) query.set('page', String(params.page));
+    if (params?.pageSize) query.set('pageSize', String(params.pageSize));
+    if (params?.keyword) query.set('keyword', params.keyword);
+    if (params?.author) query.set('author', params.author);
+    const qs = query.toString();
+    return request<PageResult<ArticleOverviewItem>>(`/posts${qs ? `?${qs}` : ''}`).then((result) => ({
+      count: result.count ?? result.list.length,
+      list: (result.list ?? []).map(normalizeArticle),
+    }));
+  },
+  getArticle: (slug: string) => request<ArticleDetail>(`/post/${slug}`).then(normalizeArticleDetail),
+  createArticle: (
+    payload: { title: string; categories?: string[]; tags?: string[]; content?: string },
+    token = getAuthToken(),
+  ) => {
+    if (!token) {
+      throw new Error('发布文章需要先登录');
+    }
+    return request<unknown>('/post', {
+      method: 'POST',
+      headers: { token },
+      body: JSON.stringify(payload),
+    });
+  },
   sendEmailCode: (email: string, type: 1 | 2 = 1) =>
     request<unknown>('/auth/email-code', {
       method: 'POST',
@@ -56,5 +94,4 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(payload),
     }),
-  githubAuthUrl: `${API_BASE}/auth/github`,
 };

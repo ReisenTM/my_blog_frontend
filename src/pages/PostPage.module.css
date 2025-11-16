@@ -1,8 +1,256 @@
 .section {
-  margin-bottom: 36px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 0;
 }
 
-.section ul {
-  padding-left: 20px;
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.meta {
+  margin: 0;
   color: var(--color-text-secondary);
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, 0.12);
+  color: var(--color-accent-blue);
+  font-size: 12px;
+}
+
+.body {
+  padding: 0;
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+.markdown {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 17px;
+}
+
+.markdown :global h1,
+.markdown :global h2,
+.markdown :global h3 {
+  font-family: var(--font-family-ui);
+  margin: 40px 0 16px;
+}
+
+.markdown :global h2 {
+  font-size: 30px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 6px;
+}
+
+.markdown :global h3 {
+  font-size: 24px;
+}
+
+.markdown :global p {
+  margin: 0;
+}
+
+.markdown :global a {
+  color: var(--color-accent-blue);
+  text-decoration: underline;
+}
+
+.markdown :global blockquote {
+  margin: 10px 0;
+  padding: 16px 20px;
+  border-left: 4px solid var(--color-accent-blue);
+  background: rgba(0, 122, 255, 0.05);
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+}
+
+.markdown :global ul,
+.markdown :global ol {
+  padding-left: 28px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.markdown :global pre {
+  background: #1e2028;
+  color: #f8fafc;
+  border-radius: 16px;
+  padding: 18px 20px;
+  font-family: var(--font-family-code);
+  font-size: 14px;
+  overflow-x: auto;
+  margin: 8px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.markdown :global pre code {
+  display: block;
+  counter-reset: line;
+  padding-left: 0;
+}
+
+.markdown :global pre code .token-line {
+  counter-increment: line;
+  display: block;
+  margin-left: 48px;
+  padding-left: 8px;
+  position: relative;
+}
+
+.markdown :global pre code .token-line::before {
+  content: counter(line);
+  position: absolute;
+  left: -48px;
+  width: 40px;
+  text-align: right;
+  padding-right: 12px;
+  color: #6b7280;
+}
+
+.markdown :global pre button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.markdown :global pre button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.markdown :global code {
+  background: var(--color-surface, #f5f6fb);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: var(--font-family-code);
+  font-size: 14px;
+}
+
+.markdown :global pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown :global table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border: 1px solid var(--color-border);
+}
+
+.markdown :global th,
+.markdown :global td {
+  border: 1px solid var(--color-border);
+  padding: 10px 14px;
+}
+
+.markdown :global img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.markdown :global hr {
+  border: none;
+  border-top: 1px dashed var(--color-border);
+  margin: 32px 0;
+}
+
+.markdown :global .token.keyword {
+  color: #f472b6;
+}
+
+.markdown :global .token.string {
+  color: #a6e22e;
+}
+
+.markdown :global .token.function {
+  color: #ffd479;
+}
+
+.markdown :global .token.comment {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.placeholder {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.sidebarList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebarList li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.sidebarList a {
+  text-decoration: none;
+  color: var(--color-text-main);
+}
+
+.sidebarList a:hover {
+  color: var(--color-accent-blue);
+}
+
+.sidebarList span {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.tocEmpty {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .markdown :global pre {
+    margin: 8px 0;
+  }
 }

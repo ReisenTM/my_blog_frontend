@@ -1,44 +1,113 @@
-# Reisen`s Blog 前端
+# Reisen`s Blog · Web 前端
 
-基于 React + TypeScript + Vite 打造的多页面博客前端，参考 `doc/参考文档.md` 规范，还原一个偏编程主题的个人博客（首页、文章详情、文章列表、目录/侧栏）。
+以 React + TypeScript + Vite 构建的博客前端。界面遵循 `doc/index.html` 的设计语言：三栏式正文 + 粘性目录、浅色调排版以及突出代码的视觉秩序。可直接对接配套的 Go 后端，也可以对接任意遵循相同 API 的服务。
 
-## 功能特性
+![home](doc/index.html)
 
-- **设计令牌单一来源**：`src/styles/colors.ts`、`typography.ts` 通过 `applyDesignTokens` 注入 CSS 变量，组件统一取值，方便主题切换。
-- **博客化组件组合**：`PostLayout` 三栏布局、`TableOfContents` 粘性目录、`CodeBlock` 语法高亮+复制、`Alert` 提示框完全遵循参考文档规范。
-- **完整路由 + 实时 API**：`react-router-dom` 驱动首页 / 全部文章 / 分类 / 关于 / 登录 / 文章详情 / 404，数据通过 `src/services/api.ts` 请求后端（可用 `VITE_API_BASE` 覆盖默认地址）。
-- **登录体验**：`/login` 页面提供 GitHub OAuth、邮箱登录（邮箱+密码）与邮箱注册（邮箱+验证码+密码）三种入口，后端接入时按需对接对应 API。
-- **首页体验**：英雄区 + 最新文章列表 + 分类索引 + 写作进度，让整个站点更接近真实博客运营。
-- **使用文档与 API 定义**：详见 [`USAGE.md`](USAGE.md)，覆盖命令、目录结构、Mock API 形状与集成建议。
+---
 
-## 快速开始
+## ✨ 特色特性
+
+| 模块 | 说明 |
+| --- | --- |
+| 设计系统 | `src/styles/colors.ts` + `typography.ts` 输出 CSS Variables，配合 `applyDesignTokens` 保证字体、色彩在任意页面都一致。 |
+| 文章体验 | `PostLayout` 三栏布局、`TableOfContents` 粘性目录、Prism 代码高亮 + 复制按钮、行号等增强细节。 |
+| 列表 & 分类 | 首页、全部文章、分类页都使用卡片化布局，支持搜索、排序、分页等交互。 |
+| 鉴权流程 | 登录/注册页覆盖邮箱验证码注册、邮箱密码登录，登录后会存储 Token 并在发文时自动携带。 |
+| API 封装 | `src/services/api.ts` 统一处理 baseURL、通用响应、鉴权头。可通过 `VITE_API_BASE` 切换请求地址。 |
+
+更多组件/API 约定可查阅 [`USAGE.md`](USAGE.md) 与 `doc/` 下的设计文档。
+
+---
+
+## 🧱 技术栈
+
+- **构建**：Vite + SWC
+- **框架**：React 18 + React Router v7
+- **语言**：TypeScript
+- **样式**：原子化 CSS Modules + CSS Variables
+- **高亮**：Prism.js（定制 token + 复制按钮）
+
+---
+
+## 🚀 快速启动
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-构建与预览：
+在 `http://localhost:5173` 访问。构建与预览：
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## 目录速览
+---
 
-- `src/styles/`：设计令牌与全局样式。
-- `src/components/`：布局、文章模块与基础 UI。
-- `src/pages/`：`HomePage`、`AllPostsPage`、`CategoriesPage`、`AboutPage`、`LoginPage`、`PostPage` 等。
-- `src/services/api.ts`：封装所有后端接口请求。
-- `USAGE.md`：使用说明 + API 约定。
-
-## 环境变量
-
-默认情况下，前端会向相对路径 `/api` 发起请求，开发模式由 Vite 代理到 `http://127.0.0.1:8083`。如需调整，可在根目录创建 `.env` 或 `.env.local`：
+## 📁 目录结构
 
 ```
-VITE_API_BASE=/api              # 前端请求基础路径，生产可指向 Nginx 反向代理
-VITE_DEV_API_TARGET=http://127.0.0.1:8083  # 本地开发代理到的后端地址
+frontend
+├─ doc/                    # 设计稿与 API 文档
+├─ src/
+│  ├─ components/          # Header / Footer / PostLayout / Sidebar 等复用组件
+│  ├─ pages/               # Home / AllPosts / Categories / Login / Post / ...
+│  ├─ services/api.ts      # 与后端交互的统一封装
+│  ├─ styles/              # colors.ts / typography.ts / global.css
+│  ├─ hooks/               # useActiveHeading、useAuth 等自定义 Hook
+│  └─ utils/               # markdown 渲染、格式化等工具
+└─ README.md
 ```
-# my_blog
+
+---
+
+## ⚙️ 环境变量
+
+| 变量 | 作用 | 默认值 |
+| --- | --- | --- |
+| `VITE_API_BASE` | 前端请求的 API 基础路径 | `/api` |
+| `VITE_DEV_API_TARGET` | Vite 开发代理指向的后端地址 | `http://127.0.0.1:8083` |
+
+可在 `.env` / `.env.local` 中覆盖：
+
+```env
+VITE_API_BASE=/api
+VITE_DEV_API_TARGET=http://127.0.0.1:8083
+```
+
+---
+
+## 🧪 常用脚本
+
+| 命令 | 说明 |
+| --- | --- |
+| `npm run dev` | 启动开发服务器（带代理） |
+| `npm run build` | TypeScript 检查 + 产出静态资源 |
+| `npm run preview` | 基于构建产物启动只读预览 |
+
+---
+
+## 📮 API 约定（摘要）
+
+| 方法&路径 | 说明 |
+| --- | --- |
+| `GET /api/posts` | 文章列表（分页、搜索、作者过滤） |
+| `POST /api/post` | 发布文章（需 token） |
+| `POST /api/auth/email-code` | 发送邮箱验证码 |
+| `POST /api/auth/register` | 邮箱注册 |
+| `POST /api/auth/email-login` | 邮箱登录 |
+
+更详细的字段说明参考 `backend/doc/api-reference.md`。
+
+---
+
+## 🤝 贡献 & 开发建议
+
+1. 前后端都位于同一仓库，建议通过 `VITE_DEV_API_TARGET` 直接连本地 Go 服务。
+2. 新增页面时先在 `styles/` 下定义好 token，再在组件内引用，避免 hardcode。
+3. 如果你对 UI 有更多想法，欢迎在 `doc/` 中补充设计稿，再同步修改相应 CSS Modules。
+
+Happy hacking! 🚀

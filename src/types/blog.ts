@@ -53,6 +53,27 @@ export interface BlogPost {
   recommendedSlugs: string[];
 }
 
+export interface ArticleOverviewItem {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string;
+  categories: string[] | null;
+  tags: string[] | null;
+  authorId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ArticleDetail extends ArticleOverviewItem {
+  content: string;
+}
+
+export interface PageResult<T> {
+  list: T[];
+  count?: number;
+}
+
 export interface Topic {
   id: string;
   title: string;

@@ -1,6 +1,6 @@
 export const Fonts = {
   fontUi: "'Inter', 'Helvetica Neue', 'PingFang SC', sans-serif",
-  fontBody: "'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif",
+  fontBody: "'Lora', 'Georgia', 'Songti SC', 'PingFang SC', serif",
   fontCode: "'JetBrains Mono', 'Fira Code', monospace",
 } as const;
 

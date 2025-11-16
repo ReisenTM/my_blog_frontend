@@ -1,26 +1,26 @@
 import { Link } from 'react-router-dom';
-import type { BlogPost } from '../types/blog';
+import type { ArticleOverviewItem } from '../types/blog';
 import { formatDate } from '../utils/formatDate';
 import styles from './PostPreviewCard.module.css';
 
 interface PostPreviewCardProps {
-  post: BlogPost;
+  post: ArticleOverviewItem;
 }
 
 const PostPreviewCard = ({ post }: PostPreviewCardProps) => {
   return (
     <article className={styles.card}>
       <p className={styles.meta}>
-        <span>{formatDate(post.publishedAt)}</span>
+        <span>{formatDate(post.createdAt)}</span>
         <span>·</span>
-        <span>{post.readingTime}</span>
+        <span>{post.authorId}</span>
       </p>
       <Link to={`/posts/${post.slug}`} className={styles.title}>
         {post.title}
       </Link>
       <p className={styles.summary}>{post.summary}</p>
       <div className={styles.tags}>
-        {post.tags.map((tag) => (
+        {(post.tags ?? []).map((tag) => (
           <span key={tag} className={styles.tag}>
             {tag}
           </span>

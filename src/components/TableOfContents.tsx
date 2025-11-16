@@ -15,7 +15,7 @@ interface TableOfContentsProps {
 const TableOfContents: FC<TableOfContentsProps> = ({ headings, activeId }) => {
   return (
     <nav className={styles.container} aria-label="目录">
-      <p className={styles.label}>内容导航</p>
+      <p className={styles.label}>文章目录</p>
       <ul className={styles.list}>
         {headings.map((heading) => {
           const isActive = heading.id === activeId;

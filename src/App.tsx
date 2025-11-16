@@ -7,6 +7,7 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import PostPage from './pages/PostPage';
+import PublishPage from './pages/PublishPage';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/publish" element={<PublishPage />} />
           <Route path="/posts/:slug" element={<PostPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

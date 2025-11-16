@@ -1,3 +1,8 @@
+.app {
+  background: var(--color-bg-main, #fff);
+  min-height: 100vh;
+}
+
 .shell {
   max-width: 1280px;
   margin: 0 auto;

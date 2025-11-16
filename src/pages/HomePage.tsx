@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PostPreviewCard from '../components/PostPreviewCard';
 import styles from './HomePage.module.css';
-import type { BlogPost, ChangelogEntry, Topic } from '../types/blog';
+import type { ArticleOverviewItem } from '../types/blog';
 import { api } from '../services/api';
+import { formatDate } from '../utils/formatDate';
 
 const HomePage = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [changelog, setChangelog] = useState<ChangelogEntry[]>([]);
+  const [posts, setPosts] = useState<ArticleOverviewItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -16,15 +15,9 @@ const HomePage = () => {
     let cancelled = false;
     (async () => {
       try {
-        const [postData, topicData, logData] = await Promise.all([
-          api.listPosts(),
-          api.getTopics(),
-          api.getChangelog(),
-        ]);
+        const postResult = await api.listArticles({ page: 1, pageSize: 6 });
         if (cancelled) return;
-        setPosts(postData);
-        setTopics(topicData);
-        setChangelog(logData);
+        setPosts(postResult.list);
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : '数据加载失败');
@@ -40,29 +33,42 @@ const HomePage = () => {
     };
   }, []);
 
+  const topics = useMemo(() => {
+    const palette = ['#FF8A65', '#4DB6AC', '#7986CB', '#FFD54F', '#81C784'];
+    const stat = new Map<string, number>();
+    posts.forEach((post) => {
+      const categories = post.categories ?? [];
+      categories.forEach((category) => {
+        stat.set(category, (stat.get(category) ?? 0) + 1);
+      });
+    });
+    return Array.from(stat.entries()).map(([title, count], index) => ({
+      id: title,
+      title,
+      description: `共 ${count} 篇文章`,
+      postCount: count,
+      accent: palette[index % palette.length],
+    }));
+  }, [posts]);
+
+  const changelog = useMemo(
+    () =>
+      posts.slice(0, 4).map((post) => ({
+        id: post.slug,
+        date: formatDate(post.updatedAt),
+        summary: `更新《${post.title}》`,
+        status: 'shipped',
+      })),
+    [posts],
+  );
+
   const featuredPost = posts[0];
 
   return (
     <div className={styles.wrapper}>
-      <section className={styles.hero}>
-        <div className={styles.heroBadge}>Reisen`s Blog · 编程手记</div>
-        <h1>记录我在编程世界的灵感与踩坑💡</h1>
-        <p>这里是我写代码、读源码、折腾工具的地方，从前端、后端到心得分享，希望写下的每一篇文章都能帮你少走弯路。</p>
-        <div className={styles.heroActions}>
-          {featuredPost ? (
-            <Link to={`/posts/${featuredPost.slug}`} className={styles.heroPrimary}>
-              阅读最新文章
-            </Link>
-          ) : null}
-          <Link to="/categories" className={styles.heroSecondary}>
-            浏览全部分类
-          </Link>
-        </div>
-      </section>
-
       {error ? <p className={styles.error}>{error}</p> : null}
 
-      <section className={styles.postsSection}>
+      <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <div>
             <p className={styles.kicker}>最新文章</p>
@@ -72,7 +78,7 @@ const HomePage = () => {
             查看全部 →
           </Link>
         </div>
-        <div className={styles.postsGrid}>
+        <div className={styles.cards}>
           {loading && !posts.length ? <p>加载文章中…</p> : null}
           {posts.map((post) => (
             <PostPreviewCard key={post.id} post={post} />
@@ -80,7 +86,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className={styles.topicsSection}>
+      <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <div>
             <p className={styles.kicker}>主题索引</p>
@@ -88,18 +94,21 @@ const HomePage = () => {
           </div>
         </div>
         <div className={styles.topicsGrid}>
-          {topics.map((topic) => (
-            <article key={topic.id} className={styles.topicCard}>
-              <span className={styles.topicBadge} style={{ background: topic.accent }} />
-              <h3>{topic.title}</h3>
-              <p>{topic.description}</p>
-              <span className={styles.topicMeta}>{topic.postCount} 篇文章</span>
-            </article>
-          ))}
+          {topics.length
+            ? topics.map((topic) => (
+                <article key={topic.id} className={styles.topicCard}>
+                  <span className={styles.topicBadge} style={{ background: topic.accent }} />
+                  <h3>{topic.title}</h3>
+                  <p>{topic.description}</p>
+                  <span className={styles.topicMeta}>{topic.postCount} 篇文章</span>
+                </article>
+              ))
+            : null}
+          {!topics.length ? <p className={styles.empty}>暂无分类数据，去写第一篇文章吧。</p> : null}
         </div>
       </section>
 
-      <section className={styles.changelogSection}>
+      <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <div>
             <p className={styles.kicker}>更新日志</p>
@@ -107,13 +116,16 @@ const HomePage = () => {
           </div>
         </div>
         <ol className={styles.changelogList}>
-          {changelog.map((entry) => (
-            <li key={entry.id} className={styles.changelogItem}>
-              <span className={styles.changelogDate}>{entry.date}</span>
-              <p>{entry.summary}</p>
-              <span className={styles.changelogStatus}>{entry.status}</span>
-            </li>
-          ))}
+          {changelog.length
+            ? changelog.map((entry) => (
+                <li key={entry.id} className={styles.changelogItem}>
+                  <span className={styles.changelogDate}>{entry.date}</span>
+                  <p>{entry.summary}</p>
+                  <span className={styles.changelogStatus}>{entry.status}</span>
+                </li>
+              ))
+            : null}
+          {!changelog.length ? <li className={styles.changelogItem}>暂未有更新记录。</li> : null}
         </ol>
       </section>
     </div>
